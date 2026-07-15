@@ -1,6 +1,6 @@
 # NourishNet — Frontend
 
-A production-grade React frontend for **NourishNet**, a web-based food donation and distribution management system with real-time tracking. This frontend connects directly to the existing NourishNet/Smart Food Redistribution backend (Node.js + Express + MongoDB) — every screen calls a real backend endpoint; nothing is mocked.
+A production-grade React frontend for **NourishNet**, a web-based food donation and distribution management system with real-time tracking. This frontend connects directly to the existing NourishNet backend (Node.js + Express + MongoDB) — every screen calls a real backend endpoint; nothing is mocked.
 
 ---
 
