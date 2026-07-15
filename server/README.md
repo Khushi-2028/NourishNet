@@ -1,4 +1,4 @@
-# Smart Food Redistribution System - Backend
+# NourishNet - Backend
 
 ## Overview
 
