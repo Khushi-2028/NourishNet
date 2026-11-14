@@ -1,6 +1,12 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { FiArrowLeft, FiCheckCircle, FiUser, FiCalendar } from "react-icons/fi";
+import {
+  FiArrowLeft,
+  FiCheckCircle,
+  FiUser,
+  FiCalendar
+} from "react-icons/fi";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 
@@ -12,6 +18,9 @@ import {
   confirmDelivery,
   selectDeliveriesMutationStatus,
 } from "../../features/deliveries/deliveriesSlice";
+
+const SERVER_URL =
+  import.meta.env.VITE_SERVER_URL || "http://localhost:5000";
 
 const ConfirmDeliveryPage = () => {
   const { id } = useParams();
@@ -67,6 +76,12 @@ const ConfirmDeliveryPage = () => {
     );
   }
 
+  const proofImageUrl = delivery.proofImage
+    ? delivery.proofImage.startsWith("http")
+      ? delivery.proofImage
+      : `${SERVER_URL}${delivery.proofImage}`
+    : null;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 15 }}
@@ -94,11 +109,9 @@ const ConfirmDeliveryPage = () => {
         <div className="grid md:grid-cols-2 gap-6 mb-8">
 
           <div className="flex items-center gap-3">
-
             <FiUser className="text-primary-600" />
 
             <div>
-
               <p className="text-xs text-slate-500">
                 Volunteer
               </p>
@@ -106,84 +119,68 @@ const ConfirmDeliveryPage = () => {
               <p className="font-medium">
                 {delivery.volunteerId?.userId?.name || "Volunteer"}
               </p>
-
             </div>
-
           </div>
 
           <div className="flex items-center gap-3">
-
             <FiCalendar className="text-primary-600" />
 
             <div>
-
               <p className="text-xs text-slate-500">
                 Uploaded
               </p>
 
               <p className="font-medium">
                 {delivery.proofUploadedAt
-                  ? new Date(
-                      delivery.proofUploadedAt
-                    ).toLocaleString()
+                  ? new Date(delivery.proofUploadedAt).toLocaleString()
                   : "-"}
               </p>
-
             </div>
-
           </div>
 
         </div>
 
-       <div className="mb-8">
-
-  <h3 className="font-semibold mb-3">
-    Proof Image
-  </h3>
-
-  {delivery.proofImage ? (
-
-    <img
-      src={`http://localhost:5000${delivery.proofImage}`}
-      alt="Proof"
-      className="rounded-xl border w-full max-h-[500px] object-cover"
-    />
-
-  ) : (
-
-    <div className="rounded-xl border p-6 text-center text-slate-500">
-      Volunteer hasn't uploaded proof yet.
-    </div>
-
-  )}
-
-</div>
+        {/* Proof Image */}
         <div className="mb-8">
+          <h3 className="font-semibold mb-3">
+            Proof Image
+          </h3>
 
+          {proofImageUrl ? (
+            <img
+              src={proofImageUrl}
+              alt="Delivery Proof"
+              className="rounded-xl border w-full max-h-[500px] object-cover"
+            />
+          ) : (
+            <div className="rounded-xl border p-6 text-center text-slate-500">
+              Volunteer hasn't uploaded proof yet.
+            </div>
+          )}
+        </div>
+
+        {/* Volunteer Notes */}
+        <div className="mb-8">
           <h3 className="font-semibold mb-3">
             Volunteer Notes
           </h3>
 
           <div className="rounded-xl border p-5 bg-slate-50 dark:bg-slate-900">
-
             {delivery.proofNotes || "No notes provided."}
-
           </div>
-
         </div>
 
-       <Button
-  variant="primary"
-  icon={FiCheckCircle}
-  loading={loading === "loading"}
-  disabled={!delivery.proofImage}
-  onClick={handleConfirm}
->
-  Confirm Delivery
-</Button>
+        <Button
+          variant="primary"
+          icon={FiCheckCircle}
+          loading={loading === "loading"}
+          disabled={!delivery.proofImage}
+          onClick={handleConfirm}
+        >
+          Confirm Delivery
+        </Button>
 
       </div>
-
     </motion.div>
   );
 };
